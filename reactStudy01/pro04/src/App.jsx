@@ -62,7 +62,7 @@ function reducer(state,action){
 }
 
 //context 
-export const DiaryContext = React.createContext();// state 값을 공급하는 context
+export const DiaryStateContext = React.createContext();// state 값을 공급하는 context
 export const DiaryDispatchContext = React.createContext();// 생성, 수정(갱신), 삭제 값을 공급하는 context
 
 
@@ -128,7 +128,7 @@ const OnDelete= (targetId) =>{
   return <div>데이터를 불러오는중 </div>
  }else{ // data 가 들어오면
   return (
-    <DiaryContext.Provider value={data}>
+    <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{onCreate,OnUpdate,OnDelete}}>
       <div className="App">
         <Routes>
@@ -146,7 +146,7 @@ const OnDelete= (targetId) =>{
         </div>
       </div>
       </DiaryDispatchContext.Provider>
-    </DiaryContext.Provider>
+    </DiaryStateContext.Provider>
   )
   }
 }
