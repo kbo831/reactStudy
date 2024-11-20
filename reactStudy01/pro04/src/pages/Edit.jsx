@@ -5,7 +5,7 @@ import { useNavigate } from 'react-router-dom';
 import { emoArray } from '../utils/emoArray';
 
 import EmotionItem from './EmotionItem';
-import Header from '@components/Header';
+
 
 
 if (!emoArray || emoArray.length === 0) {
@@ -72,8 +72,7 @@ const handleOnGoBack= ()=>{
     return(
         <>
        
-             <div className="editor">
-
+        <div className="editor">
             <div className="editor_section">
                 <h3>오늘 날짜</h3>
                 <input type="date" value={state.date} onChange={handlerChangeDate}/>
