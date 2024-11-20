@@ -4,6 +4,7 @@ import Button from '@pages/button';
 import { useContext, useEffect, useState } from "react";
 import { DiaryStateContext } from './../App';
 import { getMonthRangeByDate } from '../utils/getMonthRangeByDate';
+import DiaryList from './DiaryList';
 
 
 const Home = () =>{
@@ -51,8 +52,10 @@ const Home = () =>{
     return(
         <>
             <Header leftChild={<Button type={"default"} text={"이전"} onClick={onDecreaseMonth}/>} headerTitle={headerTitle} rightChild={<Button text={"다음"} onClick={onIncreaseMonth}/>}/>
-
-        
+            <div>
+            <DiaryList data={filteredData}></DiaryList>
+            </div>
+            
         </>
     );
 }
