@@ -2,6 +2,7 @@
 import Button from '@pages/button';
 import { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import DiaryItem from './DiaryItem';
 
 
 //재생설할 필요 없으면 컴포넌트 밖에 선언
@@ -11,7 +12,7 @@ const sortOptionList = [
 ];
 
 const DiaryList = ({data}) =>{
-    console.log("diary data" , data);
+    //console.log("diary data" , data);
 
     //사용자가 선택한 값을 저장하기 위해 State 생성하기 
     const [sortType, setSortType] = useState("latest");
@@ -55,9 +56,9 @@ const DiaryList = ({data}) =>{
     },[data,sortType]); // 의존성 배열에는 변화가 감지되는 기준의 배열을 입력 
 
     return (
-            <div className="DiaryList">
-                <div className="listWrap">
-                    <div className="left">
+            <div className="DiaryList ">
+                <div className="listWrap flex flex-between border-top">
+                    <span className="left">
                         <select name="" id="" value={sortType} onChange={onChangeSortType}>
                             {sortOptionList.map((item,index)=>(
                                 <option key={index} value={item.value}>{item.name}</option>
@@ -65,12 +66,18 @@ const DiaryList = ({data}) =>{
                             )}
 
                         </select>
-                    </div>
-                    <div className="right">
+                    </span>
+                    <span className="right">
                         <Button type={"positive"} text={"새 일기 쓰기"} onClick={conClickNew}></Button>
-                    </div>
+                    </span>
                 </div>
-
+                {/* sortedData 된 데이터 아래 렌더링하기 */}
+                <ul className="itemWrap border-bottom custom-scrollbar">
+                    {sortedData.map((item)=>(
+                        <DiaryItem key={item.id} {...item}></DiaryItem>
+                    )
+                    )}
+                </ul>
 
             </div>
     );

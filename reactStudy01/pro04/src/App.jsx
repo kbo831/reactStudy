@@ -131,22 +131,30 @@ const OnDelete= (targetId) =>{
     <DiaryStateContext.Provider value={data}>
       <DiaryDispatchContext.Provider value={{onCreate,OnUpdate,OnDelete}}>
       <div className="App">
-        <Routes>
-          <Route path="/" element={<Home/>}/>
-          <Route path="/new" element={<New/>}/>
-          <Route path="/diary/:id" element={<Diary/>}/>
-          <Route path="/edit/:id" element={ <Edit/>}/>
-        </Routes>
+   
 
-        <div className="navi">
-          <Link to="/">Home</Link>
-          <Link to="/new">New</Link>
-          <Link to="/diary">Diary</Link>
-          <Link to="/edit">Edit</Link>
+        <div className="diaryWrap  bordered">
+          
+          <div className="navi flex flex-between">
+              <Link to="/" title="home 이동 현재창열림" >Home</Link>
+              <Link to="/new">New</Link>
+              <Link to="/diary">Diary</Link>
+              <Link to="/edit">Edit</Link>
+            </div>
+          
+          <Routes>
+            <Route path="/" element={<Home/>}/>
+            <Route path="/new" element={<New/>}/>
+            <Route path="/diary/:id" element={<Diary/>}/>
+            <Route path="/edit/:id" element={ <Edit/>}/>
+          </Routes>
+
+         
         </div>
       </div>
       </DiaryDispatchContext.Provider>
     </DiaryStateContext.Provider>
+  
   )
   }
 }
