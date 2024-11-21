@@ -147,6 +147,7 @@ const OnDelete= (targetId) =>{
             <Route path="/new" element={<New/>}/>
             <Route path="/diary/:id" element={<Diary/>}/>
             <Route path="/edit/:id" element={ <Edit/>}/>
+          {/*  <Route path="*" element={<NotFound />} />  404 페이지 */}
           </Routes>
 
          
