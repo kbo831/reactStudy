@@ -1,8 +1,10 @@
 *{margin: 0;padding: 0; box-sizing: border-box;}
 body,html{width: 100%;}
 ul,li{list-style: none;}
-.flex{display:flex; width: 100%; align-items: center;}
-.flex-center{-ms-flex-align: center;}
+h1,h2,h3,h4,h5,h6{margin: 0 0 20px 0;}
+.flex{display:flex; width: 100%; align-items: center; flex-wrap: wrap;}
+.flex-inline{display: inline-flex;}
+.flex-center{align-items: center;}
 .flex-between{ justify-content:space-between}
 .flex-start{ justify-content: flex-start;}
 .bordered {border: 1px solid #ddd}
@@ -10,7 +12,9 @@ ul,li{list-style: none;}
 .border-bottom{border-bottom:1px solid #ddd}
 button{}
 .absolute {position:absolute;}
-select{height:40px;border:1px solid #ddd; border-radius: 5px;}
+textarea,select,input{border:1px solid #ddd; border-radius: 5px;}
+select,input{height:40px;}
+textarea{width: 100%;overflow: auto; resize: vertical;}
 span,img{display:inline-block}
 .left-align{text-align: left;}
 .textContent{text-align: left; word-break: keep-all; word-wrap: break-word; padding:20px; }
@@ -61,9 +65,11 @@ span,img{display:inline-block}
 .listWrap{padding:20px 0 }
 .itemWrap{overflow-y: auto; max-height: 375px; min-height: 375px; height: 100%;}
  
+.emoul .img,.emoul .img *{width: 40px; height: 40px;}
+
 .diaryItem {padding : 20px 20px 40px 0;position:relative}
 .diaryItem:not(:last-child){border-bottom: 1px solid #ddd;}
-.diaryItem .img,.diaryItem .img *{width: 40px; height: 40px;}
+
 /* .diaryItem .textContent{height: 120px;} */
 .diaryItem .date{ right:20px; bottom: 10px}
 .diaryItem .btn{left:20px; bottom:10px}

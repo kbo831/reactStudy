@@ -71,15 +71,15 @@ const handleOnGoBack= ()=>{
 
     return(
         <>
-       
+
         <div className="editor">
-            <div className="editor_section">
+            <div className="sectionWrap">
                 <h3>오늘 날짜</h3>
                 <input type="date" value={state.date} onChange={handlerChangeDate}/>
             </div>
-            <div className="editor_section">
+            <div className="listWrap">
                 <h3>오늘의 감정</h3>
-                <ul className="flex">
+                <ul className="flex emoul flex-between">
                     {emoArray.map((item)=>(
                         <EmotionItem key={item.id} {...item} isSelected={state.emotionId === item.id} onClick={handlerChangeEmotion}/>
                     ))  
@@ -87,11 +87,11 @@ const handleOnGoBack= ()=>{
                 </ul>
                 {/* isSelected 는 감정이미지에 있는 감정인지 검증하는 역할 */}
             </div>
-            <div className="editor_section">
+            <div className="listWrap">
                 <h3>오늘의 일기</h3>
-                <textarea name="" id="" value={state.content} onChange={handlerChangeContent}></textarea>
+                <textarea name="" id="" value={state.content} onChange={handlerChangeContent} rows="10" cols="50" placeholder="오늘 하루를 입력하세요!"></textarea>
             </div>
-            <div className="editor_section">
+            <div className="listWrap">
                 <Button type={"positive"} text={"완료"} onClick={handleSubmit} />
                 <Button type={"cancel"} text={"취소"} onClick={handleOnGoBack} />
             </div>

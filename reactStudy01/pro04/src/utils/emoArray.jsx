@@ -12,7 +12,7 @@ for (let img in emotionImg) { // emotionImg 집합을 순회하면서 img로 하
 const structuredArray = 
   imgArray.map(
       (item, index)=>(
-      {id:index,
+      {id:index+1,
       name:item.split("/").pop(), // 파일명 추출
       src:item, // 이미지 주소 저장
       emotionId:index+1
@@ -21,7 +21,34 @@ const structuredArray =
 
 export const emoArray = structuredArray.map(({id,name,src,emotionId})=>{
 //  console.log("ID:", id, "Name:", name, "Source:", src);
-  return {id, name:name.toUpperCase(),src,emotionId}
+
+// 감정이름 변수 초기화, 값 설정할 변수 
+let emotionName = "";
+
+// emotionId에 따른 감정이름 반환  switch문
+switch(emotionId%5){
+  case 1: 
+    emotionName="아주 행복";
+    break;
+  case 2: 
+    emotionName="행복";
+    break;
+  case 3: 
+    emotionName="보통";
+    break;
+  case 4: 
+    emotionName="나쁨";
+    break;
+  case 0: 
+    emotionName="아주 나쁨";
+    break;
+  default:
+    emotionName = "보통"; 
+    
+}
+
+
+  return {id, name:name.toUpperCase(),src,emotionId,emotionName}
 })
 
 

@@ -72,7 +72,7 @@ const DiaryList = ({data}) =>{
                     </span>
                 </div>
                 {/* sortedData 된 데이터 아래 렌더링하기 */}
-                <ul className="itemWrap border-bottom custom-scrollbar">
+                <ul className="itemWrap emoul border-bottom custom-scrollbar">
                     {sortedData.map((item)=>(
                         <DiaryItem key={item.id} {...item}></DiaryItem>
                     )
