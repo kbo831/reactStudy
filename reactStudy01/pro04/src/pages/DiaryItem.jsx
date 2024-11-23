@@ -2,6 +2,7 @@ import { useNavigate } from "react-router-dom";
 import { emoArray } from "../utils/emoArray";
 import { getFormattedDate } from "./getFormattedDate";
 import Button  from '@pages/button';
+import React from "react";
 
 
 
@@ -36,7 +37,7 @@ const DiaryItem = ({id, emotionId, content,date}) =>{
             }
 
         </span>
-        <span className="textContent">{content.slice(0,25)}</span>
+        <span className="textContent">{content}</span>
         <span className="date absolute">{fulldate}</span>
         <Button className={`btn absolute`} type={"update"} text={"수정"} onClick={goEdit} />
         </li>
@@ -44,4 +45,4 @@ const DiaryItem = ({id, emotionId, content,date}) =>{
     );
 }
 
-export default DiaryItem;   
+export default React.memo(DiaryItem);   

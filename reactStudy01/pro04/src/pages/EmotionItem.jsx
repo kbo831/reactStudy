@@ -1,3 +1,5 @@
+import React from "react";
+
 const EmotionItem=({id,name,emotionName,src,onClick,isSelected})=>{
     //onClick 했을 때 id 값을 state 변수에 넣어주기 setState 
     const handlerOnClick=()=>{
@@ -16,4 +18,4 @@ const EmotionItem=({id,name,emotionName,src,onClick,isSelected})=>{
     );
 }
 
-export default EmotionItem;
+export default React.memo(EmotionItem)

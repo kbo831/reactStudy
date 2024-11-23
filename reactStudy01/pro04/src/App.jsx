@@ -1,7 +1,7 @@
 
 import './App.css'
 import './common.css'
-import { Link, Route, Routes } from 'react-router-dom'
+import { Route, Routes } from 'react-router-dom'
 import Home from './pages/Home';
 import Diary from './pages/Diary';
 import New from './pages/New';
@@ -37,7 +37,7 @@ INIT 데이터를 modata로 갱신 , 그후 setIsDataLoaded()의 false 값을 se
 
  //useReducer에 사용할 상태 변화 함수 설정
 function reducer(state,action){
-
+ 
   switch(action.type){
     case "CREATE" :{
       return [action.data, ...state]; // 1) 새로운 data객체 맨 앞에 추가, 2)...state는 기존에 있던 목록들 데이터
@@ -86,6 +86,7 @@ setIsDataLoaded(true);
 },[])
 
 
+//** 업데이트, 생성 함수 매개변수 순서 동일하게 해줘야 값이 안 바뀜 */
 //상태 변화 함수이며, dispatch를 호출하는 함수,액션 객체를 생성
 const onCreate = (date,emotionId,content) =>{
 // 필요 데이터 : 날짜, 감정이모티콘, 일기내용 => date, emotion(Id), content
@@ -94,14 +95,16 @@ dispatch({
   data:{
     id:idRef.current, // 참조한 객체의 현재값 ==> index의 역할을 함
     date: new Date(date).getTime(), // 인자로 넘어온 date를 기반으로 새로운 날짜 객체 생성후 타임스탬프형태로 변환,
-    content,
-    emotionId
+    emotionId,
+    content
   }
 });
 idRef.current +=1; // dispatch 이후에 idRef.current 증가 ( 일기 인덱스 중복 방지)
 }
 
-const OnUpdate= (targetId,date,emotionId,content) =>{
+const onUpdate= (targetId,date,emotionId,content) =>{ //
+  console.log("ssss",targetId,date,emotionId,content)
+ 
   //targetId 는 수정할 데이터를 타겟팅할 때 필요
   dispatch({
       type:"UPDATE",
@@ -115,7 +118,8 @@ const OnUpdate= (targetId,date,emotionId,content) =>{
 //end
 }
 
-const OnDelete= (targetId) =>{
+const onDelete= (targetId) =>{
+  console.log("targetId",targetId)
   //targetId 는 삭제할 데이터를 타겟팅할 때 필요
   dispatch({
       type:"DELETE",
@@ -129,19 +133,12 @@ const OnDelete= (targetId) =>{
  }else{ // data 가 들어오면
   return (
     <DiaryStateContext.Provider value={data}>
-      <DiaryDispatchContext.Provider value={{onCreate,OnUpdate,OnDelete}}>
+      <DiaryDispatchContext.Provider value={{onCreate,onUpdate,onDelete}}>
       <div className="App">
    
 
         <div className="diaryWrap  bordered">
-          
-          <div className="navi flex flex-between">
-              <Link to="/" title="home 이동 현재창열림" >Home</Link>
-              <Link to="/new">New</Link>
-              <Link to="/diary">Diary</Link>
-              <Link to="/edit">Edit</Link>
-            </div>
-          
+      
           <Routes>
             <Route path="/" element={<Home/>}/>
             <Route path="/new" element={<New/>}/>

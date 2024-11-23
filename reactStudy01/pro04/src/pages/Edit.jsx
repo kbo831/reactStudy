@@ -1,10 +1,11 @@
 import  Button  from '@pages/button';
-import { useEffect, useState } from 'react';
-import { getFormattedDate } from './getFormattedDate';
-import { useNavigate } from 'react-router-dom';
+import  Editor  from '@pages/Editor';
+import { replace, useNavigate, useParams } from 'react-router-dom';
 import { emoArray } from '../utils/emoArray';
-
-import EmotionItem from './EmotionItem';
+import useDiary from './../hooks/useDiary';
+import  Header  from '@components/Header';
+import { useContext } from 'react';
+import { DiaryDispatchContext } from '../App';
 
 
 
@@ -12,96 +13,51 @@ if (!emoArray || emoArray.length === 0) {
     console.error("emoArray is empty or undefined.");
     // 기본 데이터 제공 또는 오류 처리 ==> emoArray 보다 선 기입해야함.
   }
-const Edit = ({initData,onSubmit}) =>{
-    
-//날짜 입력 폼 저장할 State
-const [state,setState] = useState({
-    date:getFormattedDate(new Date()),
-    emotionId: emoArray.length > 0 ? emoArray[0].id : "", // 기본 감정 ID 또는 빈 값,
-    content:"",
-})
-// useNavigate를 호출하면 클라이언트 ㅅ ㅏ이드 렌더링 방식으로 페이지를 이동하는 함수를 반환하고, 이 리액트 훅을 호출해 함수 navigate를 생성하면 페이지간 이동을 간편하게 구현할 수 있음
-
-useEffect(()=>{
-    if(initData){ // 초기 데이터가 있으면 state 에 초기값으로 반화해주기 위해서 필요 
-        setState({
-            ...initData,
-            date:getFormattedDate(new Date(parseInt(initData.date)))
-        })
+const Edit = () =>{
+    //url 파라미터 사용
+    const {id} = useParams();
+    const data = useDiary(id);  // id에 해당하는 다이어리 특정 데이터 반환
+   
+    const navigate = useNavigate(-1);
+    const goBack= () =>{
+        navigate(-1);
     }
-},[initData]);
-// date:getFormattedDate(new Date(parseInt(initData.date)))
-/* 1) initData.date는 데이터베이스나 APi로 가져왔을 경우 타임스탬프(유닉스 시간) 형식일 가능성이 있음 
-2) 또한 initData.date가 문자열일 수 있기 때문에 숫자로 변환해주기 위해 parseInt()를 사용하여 숫자로 변환
-3) 변환된 타임스탬프 값을 인자로 받아 계산된 날짜 객체를 생성하기 위해 new Date()를 생성한 후에 
-4) getFormattedData() utils에 인자로 주어 반환되는 형식의 날짜 데이터를 얻을 수 있음*/
 
+    //상태변화 데이터를 전달해주는  context 선언하기
+    const {onDelete,onUpdate} = useContext(DiaryDispatchContext);
+    const onClickDelete=(e)=>{
+        e.stopPropagation();
+        // 사용자에게 인수로 전달한 텍스트와 함꼐 경고 대화상자 출력하는 브라우저 메서드, 사용자가 확인하면  true 를 반환함
+        if(window.confirm("일기를 삭제할까요? 복구 불가!")){ 
+            console.log("id",id)
+            onDelete(id); // 해당 데이터 삭제
+            navigate("/",{replace:true});
+        }
+    }
 
-const navigate = useNavigate();
+    const onSubmit = (data) =>{
+        console.log("data",data)
+        if(window.confirm("일기를 수정할까요? 복구 불가!")){ 
+          //  targetId,date,emotionId,content
+            console.log("id",id)
+            const {date, emotionId,content} = data;
+            onUpdate(id,date, emotionId,content);
+            navigate("/",{replace:true});
+        }
+    }
 
-const handlerChangeDate = (e) =>{
-    setState({
-        ...state,
-        date: e.target.value,
-    })
-}
+    
+    if(!data){
+        return <div>데이터 불러오는 중</div>
+    }else{
+        return(
+            <>
+            <Header leftChild={<Button text={"이전"} onClick={goBack}/>} headerTitle={"일기수정"}  rightChild={<Button type={"negative"} text={"삭제"} onClick={onClickDelete}/>} />
+            <Editor initData={data}  onSubmit={onSubmit}/>
+            </>
 
-const handlerChangeContent = (e) =>{
-    setState({
-        ...state,
-        content: e.target.value,
-    })
-}
-
-const handleSubmit=()=>{
-    onSubmit(state);
-}
-
-const handlerChangeEmotion = (emotionId) =>{
-    setState({
-        ...state,
-        emotionId
-    })
-    console.log("emotion onClick", emotionId);
-}
-
-const handleOnGoBack= ()=>{
-    navigate(-1);// 인수로 -1을 넣어주면 뒤로 한페이지 이동함
-}
-
-    return(
-        <>
-
-        <div className="editor">
-            <div className="sectionWrap">
-                <h3>오늘 날짜</h3>
-                <input type="date" value={state.date} onChange={handlerChangeDate}/>
-            </div>
-            <div className="listWrap">
-                <h3>오늘의 감정</h3>
-                <ul className="flex emoul flex-between">
-                    {emoArray.map((item)=>(
-                        <EmotionItem key={item.id} {...item} isSelected={state.emotionId === item.id} onClick={handlerChangeEmotion}/>
-                    ))  
-                    }
-                </ul>
-                {/* isSelected 는 감정이미지에 있는 감정인지 검증하는 역할 */}
-            </div>
-            <div className="listWrap">
-                <h3>오늘의 일기</h3>
-                <textarea name="" id="" value={state.content} onChange={handlerChangeContent} rows="10" cols="50" placeholder="오늘 하루를 입력하세요!"></textarea>
-            </div>
-            <div className="listWrap">
-                <Button type={"positive"} text={"완료"} onClick={handleSubmit} />
-                <Button type={"cancel"} text={"취소"} onClick={handleOnGoBack} />
-            </div>
-
-            </div>
-
-
-        </>
-       
-    );
+        );
+    }   
 }
 
 export default Edit;    
